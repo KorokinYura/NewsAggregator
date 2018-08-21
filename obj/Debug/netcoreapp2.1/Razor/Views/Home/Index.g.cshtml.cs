@@ -77,7 +77,7 @@ using NewsAggregator.Models;
             WriteLiteral("            <div>\r\n                ");
             EndContext();
             BeginContext(232, 110, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "64f15bb843974484b5174ba9ff0cfef3", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "007c51185ed045bab8223f67d5080e93", async() => {
                 BeginContext(329, 9, false);
 #line 13 "D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\Views\Home\Index.cshtml"
                                                                                                            Write(news.Name);
@@ -170,7 +170,7 @@ AddHtmlAttributeValue("", 316, news.Name, 316, 10, false);
             WriteLiteral("</div>\r\n\r\n");
             EndContext();
             BeginContext(598, 70, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c05675660fb74bfdaa9fe04a83570ec8", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "91b20db97c734f86b5c472722438d6bc", async() => {
                 BeginContext(649, 15, true);
                 WriteLiteral("Создать новость");
                 EndContext();

@@ -190,7 +190,9 @@ namespace NewsAggregator.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("NewsId");
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("NewsId");
 
                     b.Property<string>("Text");
 
@@ -200,7 +202,7 @@ namespace NewsAggregator.Data.Migrations
 
                     b.HasIndex("NewsId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("NewsAggregator.Models.News", b =>
@@ -210,6 +212,8 @@ namespace NewsAggregator.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("ImageHref");
 
                     b.Property<string>("Name");
 
@@ -273,7 +277,8 @@ namespace NewsAggregator.Data.Migrations
                 {
                     b.HasOne("NewsAggregator.Models.News")
                         .WithMany("Comments")
-                        .HasForeignKey("NewsId");
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

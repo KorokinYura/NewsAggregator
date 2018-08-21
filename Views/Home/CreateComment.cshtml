@@ -1,0 +1,45 @@
+﻿@model Tuple<News, IEnumerable<Comment>>
+
+<div style="font-size: 150%">Комментарии:</div>
+<hr />
+@if (Model.Item2 != null)
+{
+    <div class="table" id="table1">
+        @foreach (var comment in Model.Item2)
+        {
+            if (comment.NewsId == Model.Item1.Id)
+            {
+                <div>@comment.UserName</div>
+                <div>@comment.Text</div>
+                <div>@comment.Date</div>
+                <hr />
+            }
+        }
+    </div>
+}
+
+<div>
+    <textarea id="text"></textarea>
+</div>
+<div>
+    <input type="button" onclick="addComment()" id="createComment" value="Create" class="btn btn-default" />
+</div>
+
+<script>
+    function addComment () {
+        var text = $("#text").val();
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CreateComment", "Home")',
+            data: { newsId: @Model.Item1.Id, text: text },
+
+            success: function (result) {
+                alert(result.text);
+                $("#table1").append("<div>" + result.userName + "</div>" +
+                    "<div>" + result.text + "</div>" +
+                    "<div>" + result.date + "</div>" + "<hr />");
+            }
+        });
+    }
+</script>

@@ -32,3 +32,4 @@ D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\NewsAggre
 D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\NewsAggregator.csproj.CopyComplete
 D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Views\Home\News.g.cshtml.cs
 D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Views\Home\CreateNews.g.cshtml.cs
+D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Views\Home\CreateComment.g.cshtml.cs

@@ -13,14 +13,18 @@
         <form asp-action="CreateANews">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label>Image</label>
+                <input asp-for="ImageHref" type="file" accept=".jpg, .jpeg, .png" />
+            </div>
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Text" class="control-label"></label>
                 <textarea asp-for="Text" class="form-control"></textarea>
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

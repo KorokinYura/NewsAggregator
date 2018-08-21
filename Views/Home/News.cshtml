@@ -1,4 +1,4 @@
-﻿@model NewsAggregator.Models.News
+﻿@model Tuple<News, IEnumerable<Comment>>
 
 @{
     ViewData["Title"] = "News";
@@ -11,16 +11,16 @@
     <hr />
     <dl>
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Item1.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Item1.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Text)
+            @Html.DisplayNameFor(model => model.Item1.Text)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Text)
+            @Html.DisplayFor(model => model.Item1.Text)
         </dd>
     </dl>
 </div>
@@ -28,4 +28,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <hr />
-<div style="font-size: 150%">Комментарии:</div>
+@{await Html.RenderPartialAsync("CreateComment", new Tuple<News, IEnumerable<Comment>>(Model.Item1, Model.Item2));}
+
+
