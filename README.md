@@ -13,4 +13,5 @@ BaseCampProj
 - creating articles: authenticated users can create articles;
 - viewing other articles: any user can read articles;
 - reading comments: any user can read comments;
-- writing comments: authenticated users can write comments.
+- writing comments: authenticated users can write comments;
+- admins can ban articles.
