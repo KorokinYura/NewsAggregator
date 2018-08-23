@@ -1,8 +1,8 @@
 # NewsAggregator
 BaseCampProj
 
-1) Приложение предназначено для создания пользователями статей и чтения статей других людей.
-  Сценарий использования - пользователь заходит на сайт, читает статьи других людей, если пользователь хочет написать свою статью, или прокомментировать другую статью, он должен зарегистрироваться или залогиниться, если он уже имеет аккаунт.
+1) The application is designed for writing articles and reading articles of other people.
+  Usage scenario - the user visits the site, reads articles, if the user wants to write his article, or comment on another article, he must register or log in if he already has an account.
 
 2) Roles:
 - admin
@@ -14,4 +14,5 @@ BaseCampProj
 - viewing other articles: any user can read articles;
 - reading comments: any user can read comments;
 - writing comments: authenticated users can write comments;
-- admins can ban articles.
+- admins can delete articles;
+- admins can delete comments.
