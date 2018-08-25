@@ -1,33 +1,30 @@
-﻿@model Tuple<News, IEnumerable<Comment>>
+﻿@*@model Tuple<News, IEnumerable<Comment>>*@
+@model Tuple<News, NewsAggregator.Data.ApplicationDbContext>
 
 @{
     ViewData["Title"] = "News";
 }
 
-<h2>News</h2>
+<br><br><div class="newsFullHead">
+    @Model.Item1.Name
+</div>
 
-<div>
-    <h4>News</h4>
-    <hr />
-    <dl>
-        <dt>
-            @Html.DisplayNameFor(model => model.Item1.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Item1.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Item1.Text)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Item1.Text)
-        </dd>
-    </dl>
+<div><hr />
+    <div>
+        <div>
+            <img class="newsFullImage" src="@Url.Content(Model.Item1.ImageHref)">
+        </div><br /><hr />
+        <div class="newsFullText">
+            <span style="white-space: pre-line">@Model.Item1.Text</span>
+        </div>
+    </div>
 </div>
 <div>
+    <br />
     <a asp-action="Index">Back to List</a>
 </div>
 <hr />
-@{await Html.RenderPartialAsync("CreateComment", new Tuple<News, IEnumerable<Comment>>(Model.Item1, Model.Item2));}
+@*@{await Html.RenderPartialAsync("CreateComment", new Tuple<News, IEnumerable<Comment>>(Model.Item1, Model.Item2));}*@
+@{await Html.RenderPartialAsync("CreateComment", new Tuple<News, NewsAggregator.Data.ApplicationDbContext>(Model.Item1, Model.Item2));}
 
 

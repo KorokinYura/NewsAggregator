@@ -31,6 +31,16 @@ body {
     }
 }
 
+.newsImageDiv {
+    float: left;
+    margin: 0 20px 0 0;
+}
+
+.newsImage {
+    height: 100px;
+    width: 100px;
+}
+
 .newsHead {
     font-size: 130%;
     color: black;
@@ -39,9 +49,64 @@ body {
 
 .newsBody {
     color: black;
+    overflow: hidden;
+    height: 60px;
 }
 
 .newsFooter {
     font-size: 80%;
     color: black;
+}
+
+.commentImageDiv {
+    float: left;
+    margin: 0 20px 0 0;
+}
+
+.commentImage {
+    height: 80px;
+    width: 80px;
+}
+
+.commentHead {
+    min-height: 40px;
+    width: 200px;
+}
+
+.commentBody {
+    min-height: 40px;
+    word-wrap: break-word;
+    margin-left: 10px;
+}
+
+.commentFooter {
+    font-size: 80%;
+    min-height: 50px;
+    color: black;
+}
+
+textarea.form-control {
+    width: 400px;
+    height: 200px;
+}
+
+.newsFullImage {
+    display: block;
+    margin: 0 auto;
+    max-height: 400px;
+    max-width: 600px;
+}
+
+.newsFullHead {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.newsFullText {
+    text-align: justify;
+}
+
+.profileImage {
+    max-height: 200px;
+    max-width: 400px;
 }

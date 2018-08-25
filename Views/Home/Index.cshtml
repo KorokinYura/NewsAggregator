@@ -9,16 +9,24 @@
     {
         foreach (var news in Model)
         {
-            <div>
-                <a asp-action="News" asp-route-id="@news.Id" class="newsHead" name="@news.Name" id="@news.Name">@news.Name</a>
+            <div style="clear:both">
+                <div class="newsImageDiv">
+                    <a asp-action="News" asp-route-id="@news.Id"><img class="newsImage" src="@Url.Content(news.ImageHref) "></a>
+                </div>
+                <div style="height: 100px">
+                    <div>
+                        <a asp-action="News" asp-route-id="@news.Id" class="newsHead" name="@news.Name" id="@news.Name">@news.Name</a>
+                    </div>
+                    <div class="newsBody">
+                        @news.Text
+                    </div>
+                    <div class="newsFooter">
+                        @news.UserName
+                        @news.Date
+                    </div><br>
+                </div>
             </div>
-            <div class="newsBody">
-                @news.Text
-            </div>
-            <div class="newsFooter">
-                @news.UserName
-                @news.Date
-            </div><br>
+            <hr />
         }
     }
 </div>

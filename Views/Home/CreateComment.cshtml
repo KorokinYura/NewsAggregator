@@ -1,45 +1,66 @@
-﻿@model Tuple<News, IEnumerable<Comment>>
+﻿@*@model Tuple<News, IEnumerable<Comment>>*@
+@model Tuple<News, NewsAggregator.Data.ApplicationDbContext>
 
 <div style="font-size: 150%">Комментарии:</div>
 <hr />
 @if (Model.Item2 != null)
 {
     <div class="table" id="table1">
-        @foreach (var comment in Model.Item2)
+        @foreach (var comment in Model.Item2.Comments)
         {
             if (comment.NewsId == Model.Item1.Id)
             {
-                <div>@comment.UserName</div>
-                <div>@comment.Text</div>
-                <div>@comment.Date</div>
+                string path;
+                try
+                {
+                    path = Model.Item2.AppUsers.First(u => u.UserName == comment.UserName).ImageHref;
+                }
+                catch
+                {
+                    path = "/images/UsersImages/DefaultUser.png";
+                }
+
+                <div style="clear:both">
+                    <div class="commentImageDiv">
+                        <img class="commentImage" src=" @Url.Content(path)">
+
+                    </div>
+                    <div class="commentHead">@comment.UserName</div>
+                    <div class="commentFooter">@comment.Date</div>
+                </div>
+                <div class="commentBody">@comment.Text</div>
                 <hr />
             }
         }
     </div>
 }
 
-<div>
-    <textarea id="text"></textarea>
-</div>
-<div>
-    <input type="button" onclick="addComment()" id="createComment" value="Create" class="btn btn-default" />
-</div>
+<form asp-action="CreateComment" asp-route-newsId="@Model.Item1.Id">
+    <div class="form-group">
+        <textarea class="form-control" name="text" id="text"></textarea>
+    </div>
+    <div>
+        @*<a asp-controller="Home" asp-action="CreateComment" asp-route-newsId="1" asp-route-text="aspTest" class="btn btn-default">Create</a>*@
+        @*<input type="button" onclick="addComment()" id="createComment" value="Create" class="btn btn-default" />*@
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</form>
 
-<script>
-    function addComment () {
+@*<script>
+    function addComment() {
         var text = $("#text").val();
+        $('#text').val = '';
 
         $.ajax({
             type: "POST",
             url: '@Url.Action("CreateComment", "Home")',
-            data: { newsId: @Model.Item1.Id, text: text },
+            data: { newsId: @Model.Item1.Id, text: text }
 
-            success: function (result) {
-                alert(result.text);
-                $("#table1").append("<div>" + result.userName + "</div>" +
-                    "<div>" + result.text + "</div>" +
-                    "<div>" + result.date + "</div>" + "<hr />");
-            }
+            //success: function (result) {
+            //    $("#table1").append("<div>" + result.userName + "</div>" +
+            //        "<div>" + result.text + "</div>" +
+            //        "<div>" + formatDate(result.date) + "</div>" + "<hr />");
+            //}
         });
     }
-</script>
+</script>*@
