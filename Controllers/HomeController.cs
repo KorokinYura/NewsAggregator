@@ -78,6 +78,7 @@ namespace NewsAggregator.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CreateComment(int newsId, string text)
         {
@@ -90,7 +91,7 @@ namespace NewsAggregator.Controllers
                 comment.Date = DateTime.Now;
                 comment.NewsId = newsId;
                 _db.Comments.Add(comment);
-                _db.SaveChangesAsync();
+                _db.SaveChanges();
             }
 
             //return comment;

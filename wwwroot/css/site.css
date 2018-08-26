@@ -51,6 +51,7 @@ body {
     color: black;
     overflow: hidden;
     height: 60px;
+    white-space: pre-wrap;
 }
 
 .newsFooter {

@@ -34,33 +34,41 @@
         }
     </div>
 }
-
-<form asp-action="CreateComment" asp-route-newsId="@Model.Item1.Id">
-    <div class="form-group">
-        <textarea class="form-control" name="text" id="text"></textarea>
-    </div>
+@if (User.Identity.Name != null)
+{
+    <form asp-action="CreateComment" asp-route-newsId="@Model.Item1.Id">
+        <div class="form-group">
+            <textarea class="form-control" name="text" id="text"></textarea>
+        </div>
+        <div>
+            @*<a asp-controller="Home" asp-action="CreateComment" asp-route-newsId="1" asp-route-text="aspTest" class="btn btn-default">Create</a>*@
+            @*<input type="button" onclick="addComment()" id="createComment" value="Create" class="btn btn-default" />*@
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+}
+else
+{
     <div>
-        @*<a asp-controller="Home" asp-action="CreateComment" asp-route-newsId="1" asp-route-text="aspTest" class="btn btn-default">Create</a>*@
-        @*<input type="button" onclick="addComment()" id="createComment" value="Create" class="btn btn-default" />*@
-        <input type="submit" value="Create" class="btn btn-default" />
+        You must be logged in to write comments.
     </div>
-</form>
+}
 
 @*<script>
-    function addComment() {
-        var text = $("#text").val();
-        $('#text').val = '';
+        function addComment() {
+            var text = $("#text").val();
+            $('#text').val = '';
 
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("CreateComment", "Home")',
-            data: { newsId: @Model.Item1.Id, text: text }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CreateComment", "Home")',
+                data: { newsId: @Model.Item1.Id, text: text }
 
-            //success: function (result) {
-            //    $("#table1").append("<div>" + result.userName + "</div>" +
-            //        "<div>" + result.text + "</div>" +
-            //        "<div>" + formatDate(result.date) + "</div>" + "<hr />");
-            //}
-        });
-    }
-</script>*@
+                //success: function (result) {
+                //    $("#table1").append("<div>" + result.userName + "</div>" +
+                //        "<div>" + result.text + "</div>" +
+                //        "<div>" + formatDate(result.date) + "</div>" + "<hr />");
+                //}
+            });
+        }
+    </script>*@

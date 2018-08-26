@@ -17,9 +17,7 @@
                     <div>
                         <a asp-action="News" asp-route-id="@news.Id" class="newsHead" name="@news.Name" id="@news.Name">@news.Name</a>
                     </div>
-                    <div class="newsBody">
-                        @news.Text
-                    </div>
+                    <div class="newsBody">@news.Text</div>
                     <div class="newsFooter">
                         @news.UserName
                         @news.Date
