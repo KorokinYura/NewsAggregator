@@ -6,8 +6,8 @@ BaseCampProj
 
 2) Roles:
 - admin
-- viewer
-- writer
+- viewer (unregistered user)
+- writer (registered user)
 
 3) Functions:
 - creating articles: authenticated users can create articles;
