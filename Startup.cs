@@ -13,6 +13,7 @@ using NewsAggregator.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewsAggregator.Models;
+using NewsAggregator.Services.Interfaces;
 
 namespace NewsAggregator
 {
@@ -49,6 +50,9 @@ namespace NewsAggregator
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            var db = services.BuildServiceProvider().GetService<ApplicationDbContext>();
+            services.AddSingleton<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +74,7 @@ namespace NewsAggregator
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            
 
             app.UseMvc(routes =>
             {

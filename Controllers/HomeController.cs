@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsAggregator.Data;
 using NewsAggregator.Models;
+using NewsAggregator.Services.Interfaces;
 
 namespace NewsAggregator.Controllers
 {
@@ -17,9 +18,11 @@ namespace NewsAggregator.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IHostingEnvironment _appEnvironment;
+        private readonly INewsAggregator _newsAggregator;
 
-        public HomeController(ApplicationDbContext db, IHostingEnvironment appEnvironment)
+        public HomeController(INewsAggregator newsAggregator, ApplicationDbContext db, IHostingEnvironment appEnvironment)
         {
+            _newsAggregator = newsAggregator;
             _db = db;
             _appEnvironment = appEnvironment;
         }
@@ -32,7 +35,6 @@ namespace NewsAggregator.Controllers
         public IActionResult News(int id)
         {
             return View(new Tuple<News, ApplicationDbContext>(_db.News.First(n => n.Id == id), _db));
-            //return View(new Tuple<News, IEnumerable<Comment>>(_db.News.First(n => n.Id == id), _db.Comments));
         }
 
         [Authorize]
@@ -54,10 +56,13 @@ namespace NewsAggregator.Controllers
                 news.Text = text;
                 news.Date = DateTime.Now;
 
+                _db.News.Add(news);
+                _db.SaveChanges();
+
                 string path;
                 if (image != null)
                 {
-                    path = "/images/NewsImages/" + image.FileName;
+                    path = "/images/NewsImages/" + news.Id + image.FileName.Substring(image.FileName.LastIndexOf('.')); ;
 
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
@@ -70,32 +75,24 @@ namespace NewsAggregator.Controllers
                 }
 
                 news.ImageHref = path;
-
-                _db.News.Add(news);
                 _db.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("News", new { news.Id });
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateComment(int newsId, string text)
+        public async Task<object> CreateCommentAsync(Comment comment)
         {
-            Comment comment = new Comment();
-
             if (ModelState.IsValid)
             {
                 comment.UserName = User.Identity.Name;
-                comment.Text = text;
                 comment.Date = DateTime.Now;
-                comment.NewsId = newsId;
-                _db.Comments.Add(comment);
-                _db.SaveChanges();
+                await _newsAggregator.AddCommentAsync(comment);
             }
 
-            //return comment;
-            return RedirectToAction("News", new { id = newsId });
+            return _newsAggregator.FormComment(comment);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

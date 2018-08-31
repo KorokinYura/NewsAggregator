@@ -129,7 +129,7 @@ namespace NewsAggregator.Areas.Identity.Pages.Account.Manage
             // image
             if (image != null)
             {
-                string path = "/images/UsersImages/" + image.FileName;
+                string path = "/images/UsersImages/" + User.Identity.Name + image.FileName.Substring(image.FileName.LastIndexOf('.'));
 
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {

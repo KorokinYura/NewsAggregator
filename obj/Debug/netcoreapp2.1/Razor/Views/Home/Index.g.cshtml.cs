@@ -77,7 +77,7 @@ using NewsAggregator.Models;
             WriteLiteral("            <div style=\"clear:both\">\r\n                <div class=\"newsImageDiv\">\r\n                    ");
             EndContext();
             BeginContext(299, 108, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b330b4ed89774159bfb23c7fed71fb0c", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d8a7fdca58044e3aba786fc303e37aa0", async() => {
                 BeginContext(344, 22, true);
                 WriteLiteral("<img class=\"newsImage\"");
                 EndContext();
@@ -123,7 +123,7 @@ WriteAttributeValue("", 372, Url.Content(news.ImageHref), 372, 28, false);
             WriteLiteral("\r\n                </div>\r\n                <div style=\"height: 100px\">\r\n                    <div>\r\n                        ");
             EndContext();
             BeginContext(529, 110, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a17f40754848473b904e06613bb2dc7c", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a63da6791e274d25b65766b206ac4e31", async() => {
                 BeginContext(626, 9, false);
 #line 18 "D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\Views\Home\Index.cshtml"
                                                                                                                    Write(news.Name);
@@ -216,7 +216,7 @@ AddHtmlAttributeValue("", 613, news.Name, 613, 10, false);
             WriteLiteral("</div>\r\n\r\n");
             EndContext();
             BeginContext(975, 70, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "43d49aca29a54087b1ddf671d91db4ce", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "abde4d70f7c94e14ab64da18f6a31493", async() => {
                 BeginContext(1026, 15, true);
                 WriteLiteral("Создать новость");
                 EndContext();

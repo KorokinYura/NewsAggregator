@@ -1,5 +1,5 @@
-﻿@*@model Tuple<News, IEnumerable<Comment>>*@
-@model Tuple<News, NewsAggregator.Data.ApplicationDbContext>
+﻿@model Tuple<News, NewsAggregator.Data.ApplicationDbContext>
+
 
 @{
     ViewData["Title"] = "News";
@@ -9,7 +9,8 @@
     @Model.Item1.Name
 </div>
 
-<div><hr />
+<div>
+    <hr />
     <div>
         <div>
             <img class="newsFullImage" src="@Url.Content(Model.Item1.ImageHref)">
@@ -24,7 +25,85 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <hr />
-@*@{await Html.RenderPartialAsync("CreateComment", new Tuple<News, IEnumerable<Comment>>(Model.Item1, Model.Item2));}*@
-@{await Html.RenderPartialAsync("CreateComment", new Tuple<News, NewsAggregator.Data.ApplicationDbContext>(Model.Item1, Model.Item2));}
 
 
+<div style="font-size: 150%">Комментарии:</div>
+<hr />
+@if (Model.Item2 != null)
+{
+    <div class="table" id="table">
+    </div>
+}
+@if (User.Identity.Name != null)
+{
+    <div>
+        <div class="form-group">
+            <textarea class="form-control" name="text" id="text"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="button" onclick="addCommentAJAX()" value="Create" id="submitButton" class="btn btn-default" />
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        You must be logged in to write comments.
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(function () { addComments(); });
+
+        function addCommentAJAX() {
+            var text = $("#text").val();
+            $('#text').val = '';
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CreateCommentAsync", "Home")',
+                data: { newsId: @Model.Item1.Id, text: text },
+
+                success: addComment
+            });
+        }
+
+        function addComments() {
+            @foreach (var comment in Model.Item2.Comments)
+            {
+                if (comment.NewsId == Model.Item1.Id)
+                {
+                    string path;
+                    try
+                    {
+                        path = Model.Item2.AppUsers.First(u => u.UserName == comment.UserName).ImageHref;
+                    }
+                    catch
+                    {
+                        path = "/images/UsersImages/DefaultUser.png";
+                    }
+
+                    <text>
+                        addComment({ userName: "@comment.UserName", text: "@comment.Text", date: "@comment.Date", imagePath: "@Url.Content(path)" });
+                    </text>
+                }
+            }
+        }
+
+        function addComment(comment) {
+            $("#table").append('<div style="clear:both">' +
+                '<div class="commentImageDiv">' +
+                '<img class="commentImage" src="'
+                + comment.imagePath +
+                '"></div><div class="commentHead">'
+                + comment.userName +
+                '</div><div class="commentFooter">'
+                + comment.date +
+                '</div></div><div class="commentBody">'
+                + comment.text +
+                '</div><hr />');
+            $("#text").val("");
+        }
+    </script>
+}
