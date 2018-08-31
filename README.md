@@ -2,8 +2,8 @@
 BaseCampProj
 
 1) Usage scenario:
-  The application is designed for writing articles and reading articles of other people.
-  Usage scenario - the user visits the site, reads articles, if the user wants to write his article, or comment on another article, he must   register or log in if he already has an account.
+- The application is designed for writing articles and reading articles of other people.
+- Usage scenario - the user visits the site, reads articles, if the user wants to write his article, or comment on another article, he must   register or log in if he already has an account.
 
 2) Roles:
 - admin
