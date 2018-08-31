@@ -1,7 +1,7 @@
 # NewsAggregator
 BaseCampProj
 
-The application is designed for writing articles and reading articles of other people.
+The application is designed for writing articles and reading other people's articles.
 
 1) Usage scenario:
 - The user visits the site, reads articles, if the user wants to write his article, or comment on another article, he must   register or log in if he already has an account.
