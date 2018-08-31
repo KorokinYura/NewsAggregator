@@ -1,5 +1,4 @@
 # NewsAggregator
-BaseCampProj
 
 The application is designed for writing articles and reading other people's articles.
 
