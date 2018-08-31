@@ -1,8 +1,10 @@
-﻿using NewsAggregator.Data;
+﻿using Microsoft.AspNetCore.Http;
+using NewsAggregator.Data;
 using NewsAggregator.Models;
 using NewsAggregator.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +30,17 @@ namespace NewsAggregator.Services
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public async Task AddANewsAsync(News news)
+        {
+            await _db.News.AddAsync(news);
+            await _db.SaveChangesAsync();
+        }
+        
+        public async Task UpdateDbAsync()
+        {
+            await _db.SaveChangesAsync();
         }
 
         public object FormComment(Comment comment)

@@ -43,9 +43,9 @@ namespace NewsAggregator.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
-        public async Task<IActionResult> CreateANews(string name, string text, IFormFile image)
+        public async Task<IActionResult> CreateANewsAsync(string name, string text, IFormFile image)
         {
             News news = new News();
 
@@ -55,14 +55,12 @@ namespace NewsAggregator.Controllers
                 news.Name = name;
                 news.Text = text;
                 news.Date = DateTime.Now;
-
-                _db.News.Add(news);
-                _db.SaveChanges();
+                await _newsAggregator.AddANewsAsync(news);
 
                 string path;
                 if (image != null)
                 {
-                    path = "/images/NewsImages/" + news.Id + image.FileName.Substring(image.FileName.LastIndexOf('.')); ;
+                    path = "/images/NewsImages/" + news.Id + image.FileName.Substring(image.FileName.LastIndexOf('.'));
 
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
@@ -75,7 +73,7 @@ namespace NewsAggregator.Controllers
                 }
 
                 news.ImageHref = path;
-                _db.SaveChanges();
+                await _newsAggregator.UpdateDbAsync();
             }
 
             return RedirectToAction("News", new { news.Id });
