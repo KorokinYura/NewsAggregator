@@ -1,4 +1,4 @@
-﻿@model Tuple<News, NewsAggregator.Data.ApplicationDbContext>
+﻿@model Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>
 
 
 @{
@@ -29,11 +29,9 @@
 
 <div style="font-size: 150%">Комментарии:</div>
 <hr />
-@if (Model.Item2 != null)
-{
-    <div class="table" id="table">
-    </div>
-}
+<div class="table" id="table">
+</div>
+
 @if (User.Identity.Name != null)
 {
     <div>
@@ -70,14 +68,14 @@ else
         }
 
         function addComments() {
-            @foreach (var comment in Model.Item2.Comments)
+            @foreach (var comment in Model.Item2)
             {
                 if (comment.NewsId == Model.Item1.Id)
                 {
                     string path;
                     try
                     {
-                        path = Model.Item2.AppUsers.First(u => u.UserName == comment.UserName).ImageHref;
+                        path = Model.Item3.First(u => u.UserName == comment.UserName).ImageHref;
                     }
                     catch
                     {

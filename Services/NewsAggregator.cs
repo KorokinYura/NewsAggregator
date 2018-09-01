@@ -46,12 +46,27 @@ namespace NewsAggregator.Services
         public object FormComment(Comment comment)
         {
             var i = _db.Users.First(u => u.UserName == comment.UserName).ImageHref;
-            return new { comment.UserName, comment.Text, date = comment.Date.ToString("dd/MM/yyyy hh:MM:ss"), imagePath = _db.Users.First(u => u.UserName == comment.UserName).ImageHref };
+            return new { comment.UserName, comment.Text, date = comment.Date.ToString("dd/MM/yyyy HH:mm:ss"), imagePath = _db.Users.First(u => u.UserName == comment.UserName).ImageHref };
         }
 
-        public IQueryable<Comment> GetCommentsAsync()
+        public IQueryable<Comment> GetComments()
         {
-            throw new NotImplementedException();
+            return _db.Comments;
+        }
+
+        public IQueryable<News> GetNews()
+        {
+            return _db.News;
+        }
+
+        public IQueryable<AppUser> GetUsers()
+        {
+            return _db.AppUsers;
+        }
+
+        public News GetNewsById(int id)
+        {
+            return _db.News.First(n => n.Id == id);
         }
     }
 }

@@ -16,25 +16,23 @@ namespace NewsAggregator.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        private readonly IHostingEnvironment _appEnvironment;
         private readonly INewsAggregator _newsAggregator;
+        private readonly IHostingEnvironment _appEnvironment;
 
-        public HomeController(INewsAggregator newsAggregator, ApplicationDbContext db, IHostingEnvironment appEnvironment)
+        public HomeController(INewsAggregator newsAggregator, IHostingEnvironment appEnvironment)
         {
             _newsAggregator = newsAggregator;
-            _db = db;
             _appEnvironment = appEnvironment;
         }
 
         public IActionResult Index()
         {
-            return View(_db.News);
+            return View(_newsAggregator.GetNews());
         }
 
         public IActionResult News(int id)
         {
-            return View(new Tuple<News, ApplicationDbContext>(_db.News.First(n => n.Id == id), _db));
+            return View(new Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>(_newsAggregator.GetNewsById(id), _newsAggregator.GetComments(), _newsAggregator.GetUsers()));
         }
 
         [Authorize]
@@ -45,15 +43,11 @@ namespace NewsAggregator.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateANewsAsync(string name, string text, IFormFile image)
+        public async Task<IActionResult> CreateANewsAsync(News news, IFormFile image)
         {
-            News news = new News();
-
             if (ModelState.IsValid)
             {
                 news.UserName = User.Identity.Name;
-                news.Name = name;
-                news.Text = text;
                 news.Date = DateTime.Now;
                 await _newsAggregator.AddANewsAsync(news);
 
