@@ -9,6 +9,16 @@
     {
         foreach (var news in Model)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var b = User.IsInRole("Admin");
+                if (b)
+                {
+                    <div>
+                        <input type="button" value="Delete" />
+                    </div>
+                }
+            }
             <div style="clear:both">
                 <div class="newsImageDiv">
                     <a asp-action="News" asp-route-id="@news.Id"><img class="newsImage" src="@Url.Content(news.ImageHref) "></a>

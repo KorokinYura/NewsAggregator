@@ -39,15 +39,41 @@ namespace NewsAggregator
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<AppUser>(options =>
+
+            //services.AddDefaultIdentity<AppUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+
+
+
+            services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
-            })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            });
+
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings 
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            //    options.LoginPath = "/Account/Login"; // If the LoginPath is not set here,  
+            //                                          // ASP.NET Core will default to /Account/Login 
+            //    options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here,  
+            //                                            // ASP.NET Core will default to /Account/Logout 
+            //    options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is  
+            //                                                        // not set here, ASP.NET Core  
+            //                                                        // will default to  
+            //                                                        // /Account/AccessDenied 
+            //    options.SlidingExpiration = true;
+            //});
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -56,7 +82,7 @@ namespace NewsAggregator
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -74,7 +100,6 @@ namespace NewsAggregator
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-            
 
             app.UseMvc(routes =>
             {
@@ -82,6 +107,24 @@ namespace NewsAggregator
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CreateUserRoles(services).Wait();
+        }
+
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+
+            IdentityResult roleResult;
+            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
+            if (!roleCheck)
+            {
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            AppUser user = await UserManager.FindByNameAsync("Admin");
+            await UserManager.AddToRoleAsync(user, "Admin");
         }
     }
 }
