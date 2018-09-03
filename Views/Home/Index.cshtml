@@ -11,12 +11,12 @@
         {
             if (User.Identity.IsAuthenticated)
             {
-                var b = User.IsInRole("Admin");
-                if (b)
+                var isAdmin = User.IsInRole("Admin");
+                if (isAdmin)
                 {
-                    <div>
-                        <input type="button" value="Delete" />
-                    </div>
+                    <form asp-action="RemoveANews" asp-route-id="@news.Id">
+                        <input class="btn btn-default" type="submit" value="Delete" /><br /><br />
+                    </form>
                 }
             }
             <div style="clear:both">

@@ -87,6 +87,14 @@ namespace NewsAggregator.Controllers
             return _newsAggregator.FormComment(comment);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult RemoveANews(int id)
+        {
+            _newsAggregator.RemoveANews(id);
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

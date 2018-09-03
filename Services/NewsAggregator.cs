@@ -68,5 +68,12 @@ namespace NewsAggregator.Services
         {
             return _db.News.First(n => n.Id == id);
         }
+
+        public void RemoveANews(int id)
+        {
+            var news = _db.News.First(n => n.Id == id);
+            _db.News.Remove(news);
+            _db.SaveChanges();
+        }
     }
 }
