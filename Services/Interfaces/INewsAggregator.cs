@@ -13,6 +13,7 @@ namespace NewsAggregator.Services.Interfaces
         Task AddANewsAsync(News news);
         Task UpdateDbAsync();
         void RemoveANews(int id);
+        void RemoveComment(int id);
         object FormComment(Comment comment);
         IQueryable<Comment> GetComments();
         IQueryable<News> GetNews();

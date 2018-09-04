@@ -75,5 +75,12 @@ namespace NewsAggregator.Services
             _db.News.Remove(news);
             _db.SaveChanges();
         }
+
+        public void RemoveComment(int id)
+        {
+            var comment = _db.Comments.First(c => c.Id == id);
+            _db.Comments.Remove(comment);
+            _db.SaveChanges();
+        }
     }
 }
