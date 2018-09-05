@@ -46,7 +46,7 @@ namespace NewsAggregator.Services
         public object FormComment(Comment comment)
         {
             var i = _db.Users.First(u => u.UserName == comment.UserName).ImageHref;
-            return new { comment.UserName, comment.Text, date = comment.Date.ToString("dd/MM/yyyy HH:mm:ss"), imagePath = _db.Users.First(u => u.UserName == comment.UserName).ImageHref };
+            return new { id = comment.Id, comment.UserName, comment.Text, date = comment.Date.ToString("dd/MM/yyyy HH:mm:ss"), imagePath = _db.Users.First(u => u.UserName == comment.UserName).ImageHref };
         }
 
         public IQueryable<Comment> GetComments()

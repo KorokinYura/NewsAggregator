@@ -69,6 +69,10 @@ namespace NewsAggregator.Controllers
                 news.ImageHref = path;
                 await _newsAggregator.UpdateDbAsync();
             }
+            else
+            {
+                return RedirectToAction("CreateNews");
+            }
 
             return RedirectToAction("News", new { news.Id });
         }
