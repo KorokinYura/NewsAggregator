@@ -32,7 +32,11 @@ namespace NewsAggregator.Controllers
 
         public IActionResult News(int id)
         {
-            return View(new Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>(_newsAggregator.GetNewsById(id), _newsAggregator.GetComments(), _newsAggregator.GetUsers()));
+            return View(new Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>(
+                _newsAggregator.GetNewsById(id),
+                _newsAggregator.GetComments(),
+                _newsAggregator.GetUsers())
+                );
         }
 
         [Authorize]
@@ -41,7 +45,7 @@ namespace NewsAggregator.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> CreateANewsAsync(News news, IFormFile image)
         {
@@ -105,6 +109,20 @@ namespace NewsAggregator.Controllers
         {
             _newsAggregator.RemoveComment(commentId);
             return RedirectToAction("News", new { id = newsId });
+        }
+
+        [HttpPost]
+        public IActionResult EditNews(int id)
+        {
+            News news = _newsAggregator.GetNewsById(id);
+            return View(news);
+        }
+
+        [HttpPost]
+        public IActionResult EditANews(News news)
+        {
+            _newsAggregator.EditANews(news);
+            return RedirectToAction("News", new { id = news.Id });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

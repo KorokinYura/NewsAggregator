@@ -14,6 +14,7 @@ namespace NewsAggregator.Services.Interfaces
         Task UpdateDbAsync();
         void RemoveANews(int id);
         void RemoveComment(int id);
+        void EditANews(News news);
         object FormComment(Comment comment);
         IQueryable<Comment> GetComments();
         IQueryable<News> GetNews();

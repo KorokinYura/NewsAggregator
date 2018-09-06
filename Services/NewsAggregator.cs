@@ -35,9 +35,9 @@ namespace NewsAggregator.Services
         public async Task AddANewsAsync(News news)
         {
             await _db.News.AddAsync(news);
-            await _db.SaveChangesAsync();
+            await UpdateDbAsync();
         }
-        
+
         public async Task UpdateDbAsync()
         {
             await _db.SaveChangesAsync();
@@ -80,6 +80,17 @@ namespace NewsAggregator.Services
         {
             var comment = _db.Comments.First(c => c.Id == id);
             _db.Comments.Remove(comment);
+            _db.SaveChanges();
+        }
+
+        public void EditANews(News news)
+        {
+            News oldNews = _db.News.FirstOrDefault(n => n.Id == news.Id);
+            if (oldNews != null)
+            {
+                oldNews.Name = news.Name;
+                oldNews.Text = news.Text;
+            }
             _db.SaveChanges();
         }
     }
