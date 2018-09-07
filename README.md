@@ -21,7 +21,7 @@ The application is designed for writing articles and reading other people's arti
 - admins can delete comments.
 
 4) Pre registered accounts:
-- admin:
+- admin:<br>
  Login: Admin
  Password: 111111
 - user:
