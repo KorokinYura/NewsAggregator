@@ -22,14 +22,14 @@ The application is designed for writing articles and reading other people's arti
 
 4) Pre registered accounts:
 - admin:<br>
- Login: Admin
+ Login: Admin<br>
  Password: 111111
-- user:
- Login: Author
+- user:<br>
+ Login: Author<br>
  Password: 111111
-- user:
- Login: aa
+- user:<br>
+ Login: aa<br>
  Password: aaaaaa
-- user:
- Login: bb
+- user:<br>
+ Login: bb<br>
  Password: bbbbbb
