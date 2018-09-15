@@ -21,6 +21,7 @@ namespace NewsAggregator.Models
         public int Views { get; set; }
         public DateTime Date { get; set; }
         public string ImageHref { get; set; }
+        public bool IsConfirmed { get; set; }
         public List<Comment> Comments { get; set; }
     }
 }

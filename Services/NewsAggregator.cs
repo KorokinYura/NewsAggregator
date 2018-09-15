@@ -66,13 +66,22 @@ namespace NewsAggregator.Services
 
         public News GetNewsById(int id)
         {
-            return _db.News.First(n => n.Id == id);
+            var retNews = _db.News.First(n => n.Id == id);
+            retNews.Views++;
+            _db.SaveChanges();
+            return retNews;
         }
 
         public void RemoveANews(int id)
         {
             var news = _db.News.First(n => n.Id == id);
             _db.News.Remove(news);
+            _db.SaveChanges();
+        }
+
+        public void ConfirmANews(int id)
+        {
+            _db.News.First(n => n.Id == id).IsConfirmed = true;
             _db.SaveChanges();
         }
 

@@ -213,6 +213,8 @@ namespace NewsAggregator.Data.Migrations
 
                     b.Property<string>("ImageHref");
 
+                    b.Property<bool>("IsConfirmed");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);

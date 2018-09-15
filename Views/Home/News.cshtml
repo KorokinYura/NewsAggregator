@@ -12,11 +12,11 @@
 <div>
     <hr />
     <div>
-        @if(User.Identity.Name == Model.Item1.UserName || User.IsInRole("Admin"))
+        @if (User.Identity.Name == Model.Item1.UserName || User.IsInRole("Admin"))
         {
-            <form asp-action="EditNews" asp-route-id="@Model.Item1.Id" >
-                <input class="btn btn-default" type="submit" value="Edit"/>
-            </form>
+            <a asp-action="EditNews" asp-route-id="@Model.Item1.Id">
+                <input class="btn btn-default" type="submit" value="Edit" />
+            </a>
         }
         <div>
             <img class="newsFullImage" src="@Url.Content(Model.Item1.ImageHref)">

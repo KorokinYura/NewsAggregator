@@ -96,7 +96,6 @@ namespace NewsAggregator.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
         public IActionResult RemoveANews(int id)
         {
             _newsAggregator.RemoveANews(id);
@@ -123,6 +122,12 @@ namespace NewsAggregator.Controllers
         {
             _newsAggregator.EditANews(news);
             return RedirectToAction("News", new { id = news.Id });
+        }
+
+        public IActionResult ConfirmANews(int id)
+        {
+            _newsAggregator.ConfirmANews(id);
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
