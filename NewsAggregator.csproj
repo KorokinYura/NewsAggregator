@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Models\ViewModels\" />
+    <Folder Include="wwwroot\images\DefaultImages\" />
     <Folder Include="wwwroot\images\UsersImages\" />
     <Folder Include="wwwroot\images\NewsImages\" />
     <Folder Include="wwwroot\lib\signalr\" />

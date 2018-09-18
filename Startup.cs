@@ -78,7 +78,8 @@ namespace NewsAggregator
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var db = services.BuildServiceProvider().GetService<ApplicationDbContext>();
-            services.AddSingleton<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db));
+            var ae = services.BuildServiceProvider().GetService<IHostingEnvironment>();
+            services.AddSingleton<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db, ae));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,16 +116,24 @@ namespace NewsAggregator
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            
+            var adminRoleCheck = await RoleManager.RoleExistsAsync("Admin");
+            var moderatorRoleCheck = await RoleManager.RoleExistsAsync("Moderator");
 
-            IdentityResult roleResult;
-            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
-            if (!roleCheck)
+            if (!adminRoleCheck)
             {
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+                await RoleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+            if (!moderatorRoleCheck)
+            {
+                await RoleManager.CreateAsync(new IdentityRole("Moderator"));
             }
 
-            AppUser user = await UserManager.FindByNameAsync("Admin");
-            await UserManager.AddToRoleAsync(user, "Admin");
+            AppUser admin = await UserManager.FindByNameAsync("Admin");
+            await UserManager.AddToRoleAsync(admin, "Admin");
+
+            AppUser moder = await UserManager.FindByNameAsync("Moderator");
+            await UserManager.AddToRoleAsync(moder, "Moderator");
         }
     }
 }

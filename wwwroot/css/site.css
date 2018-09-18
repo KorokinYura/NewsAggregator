@@ -75,7 +75,6 @@ body {
 }
 
 .commentBody {
-    min-height: 40px;
     word-wrap: break-word;
     margin-left: 10px;
 }

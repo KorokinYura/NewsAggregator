@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using NewsAggregator.Models;
+using NewsAggregator.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,15 @@ namespace NewsAggregator.Services.Interfaces
     public interface INewsAggregator
     {
         Task AddCommentAsync(Comment comment);
-        Task AddANewsAsync(News news);
+        Task AddANewsAsync(News news, IFormFile image); 
         Task UpdateDbAsync();
         void RemoveANews(int id);
         void ConfirmANews(int id);
         void RemoveComment(int id);
         void EditANews(News news);
         object FormComment(Comment comment);
-        IQueryable<Comment> GetComments();
-        IQueryable<News> GetNews();
-        IQueryable<AppUser> GetUsers();
-        News GetNewsById(int id);
+        NewsViewModel GetNewsViewModel(int id);
+        IndexViewModel GetIndexViewModel();
+        EditNewsViewModel GetEditNewsViewModel(int id);
     }
 }

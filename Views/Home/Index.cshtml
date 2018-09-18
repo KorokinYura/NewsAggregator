@@ -1,4 +1,4 @@
-﻿@model IEnumerable<News>
+﻿@model NewsAggregator.Models.ViewModels.IndexViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,7 +7,7 @@
 <br><div class="container body-content">
     @if (Model != null)
     {
-        foreach (var news in Model)
+        foreach (var news in Model.News)
         {
             if (news.IsConfirmed || (User.Identity.IsAuthenticated && User.IsInRole("Admin")) || User.Identity.Name == news.UserName)
             {

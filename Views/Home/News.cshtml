@@ -1,4 +1,5 @@
-﻿@model Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>
+﻿<!--Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>-->
+@model NewsAggregator.Models.ViewModels.NewsViewModel
 
 
 @{
@@ -6,23 +7,23 @@
 }
 
 <br><br><div class="newsFullHead">
-    @Model.Item1.Name
+    @Model.News.Name
 </div>
 
 <div>
     <hr />
     <div>
-        @if (User.Identity.Name == Model.Item1.UserName || User.IsInRole("Admin"))
+        @if (User.Identity.Name == Model.News.UserName || User.IsInRole("Admin"))
         {
-            <a asp-action="EditNews" asp-route-id="@Model.Item1.Id">
-                <input class="btn btn-default" type="submit" value="Edit" />
+            <a asp-action="EditNews" asp-route-id="@Model.News.Id">
+                <span class="btn btn-default glyphicon glyphicon-pencil" type="submit" value="Edit"></span>
             </a>
         }
         <div>
-            <img class="newsFullImage" src="@Url.Content(Model.Item1.ImageHref)">
+            <img class="newsFullImage" src="@Url.Content(Model.News.ImageHref)">
         </div><br /><hr />
         <div class="newsFullText">
-            <span style="white-space: pre-line">@Model.Item1.Text</span>
+            <span style="white-space: pre-line">@Model.News.Text</span>
         </div>
     </div>
 </div>
@@ -67,31 +68,28 @@ else
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("CreateCommentAsync", "Home")',
-                data: { newsId: @Model.Item1.Id, text: text },
+                data: { newsId: @Model.News.Id, text: text },
 
                 success: addComment
             });
         }
 
         function addComments() {
-            @foreach (var comment in Model.Item2)
+            @foreach (var comment in Model.Comments)
             {
-                if (comment.NewsId == Model.Item1.Id)
+                string path;
+                try
                 {
-                    string path;
-                    try
-                    {
-                        path = Model.Item3.First(u => u.UserName == comment.UserName).ImageHref;
-                    }
-                    catch
-                    {
-                        path = "/images/UsersImages/DefaultUser.png";
-                    }
-
-                    <text>
-                        addComment({ id: "@comment.Id", userName: "@comment.UserName", text: "@comment.Text", date: "@comment.Date", imagePath: "@Url.Content(path)" });
-                    </text>
+                    path = Model.Users.First(u => u.UserName == comment.UserName).ImageHref;
                 }
+                catch
+                {
+                    path = "/images/DefaultImages/DefaultUser.png";
+                }
+
+                <text>
+                    addComment({ id: "@comment.Id", userName: "@comment.UserName", text: "@comment.Text", date: "@comment.Date", imagePath: "@Url.Content(path)" });
+                </text>
             }
         }
 
@@ -99,8 +97,8 @@ else
 
         function addComment(comment) {
             $("#table").append(
-                checkForAdmin(comment.id) +
-                '<br><br><div style="clear:both">' +
+                checkForRemoveButton(comment.id) +
+                '<div style="clear:both">' +
                 '<div class="commentImageDiv">' +
                 '<img class="commentImage" src="'
                 + comment.imagePath +
@@ -115,14 +113,13 @@ else
         }
 
 
-        function checkForAdmin(id) {
+        function checkForRemoveButton(id) {
             @if (User.Identity.IsAuthenticated)
             {
-                var isAdmin = User.IsInRole("Admin");
-                if (isAdmin)
+                if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                 {
                 <text>
-                    var button = '<input type="button" onclick="removeCommentAJAX(' + id + ')" value="Delete" id="RemButton" class="btn btn-default" />';
+                    var button = '<input type="button" onclick="removeCommentAJAX(' + id + ')" value="Delete" id="RemButton" class="btn btn-default" /><br><br>';
                     return button;
                 </text>
                 }
@@ -134,7 +131,7 @@ else
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("RemoveComment", "Home")',
-                data: { commentId: id, newsId: @Model.Item1.Id },
+                data: { commentId: id, newsId: @Model.News.Id },
 
                 success: function () {
                     location.reload();

@@ -17,26 +17,20 @@ namespace NewsAggregator.Controllers
     public class HomeController : Controller
     {
         private readonly INewsAggregator _newsAggregator;
-        private readonly IHostingEnvironment _appEnvironment;
 
-        public HomeController(INewsAggregator newsAggregator, IHostingEnvironment appEnvironment)
+        public HomeController(INewsAggregator newsAggregator)
         {
             _newsAggregator = newsAggregator;
-            _appEnvironment = appEnvironment;
         }
 
         public IActionResult Index()
         {
-            return View(_newsAggregator.GetNews());
+            return View(_newsAggregator.GetIndexViewModel());
         }
 
         public IActionResult News(int id)
         {
-            return View(new Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>(
-                _newsAggregator.GetNewsById(id),
-                _newsAggregator.GetComments(),
-                _newsAggregator.GetUsers())
-                );
+            return View(_newsAggregator.GetNewsViewModel(id));
         }
 
         [Authorize]
@@ -53,25 +47,7 @@ namespace NewsAggregator.Controllers
             {
                 news.UserName = User.Identity.Name;
                 news.Date = DateTime.Now;
-                await _newsAggregator.AddANewsAsync(news);
-
-                string path;
-                if (image != null)
-                {
-                    path = "/images/NewsImages/" + news.Id + image.FileName.Substring(image.FileName.LastIndexOf('.'));
-
-                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                    {
-                        await image.CopyToAsync(fileStream);
-                    }
-                }
-                else
-                {
-                    path = "/images/NewsImages/DefaultNews.png";
-                }
-
-                news.ImageHref = path;
-                await _newsAggregator.UpdateDbAsync();
+                await _newsAggregator.AddANewsAsync(news, image);
             }
             else
             {
@@ -102,19 +78,17 @@ namespace NewsAggregator.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Moderator")]
         [HttpPost]
         public IActionResult RemoveComment(int commentId, int newsId)
         {
             _newsAggregator.RemoveComment(commentId);
             return RedirectToAction("News", new { id = newsId });
         }
-
-        [HttpPost]
+        
         public IActionResult EditNews(int id)
         {
-            News news = _newsAggregator.GetNewsById(id);
-            return View(news);
+            return View(_newsAggregator.GetEditNewsViewModel(id));
         }
 
         [HttpPost]

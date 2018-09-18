@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using NewsAggregator.Data;
 using NewsAggregator.Models;
+using NewsAggregator.Models.ViewModels;
 using NewsAggregator.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,12 @@ namespace NewsAggregator.Services
     public class NewsAggregator : INewsAggregator
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHostingEnvironment _appEnvironment;
 
-        public NewsAggregator(ApplicationDbContext db)
+        public NewsAggregator(ApplicationDbContext db, IHostingEnvironment appEnvironment)
         {
             _db = db;
+            _appEnvironment = appEnvironment;
         }
 
         public async Task AddCommentAsync(Comment comment)
@@ -32,9 +36,28 @@ namespace NewsAggregator.Services
             }
         }
 
-        public async Task AddANewsAsync(News news)
+        public async Task AddANewsAsync(News news, IFormFile image)
         {
             await _db.News.AddAsync(news);
+            await UpdateDbAsync();
+
+            string path;
+            if (image != null)
+            {
+                path = "/images/NewsImages/" + news.Id + image.FileName.Substring(image.FileName.LastIndexOf('.'));
+
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await image.CopyToAsync(fileStream);
+                }
+            }
+            else
+            {
+                path = "/images/DefaultImages/DefaultNews.png";
+            }
+
+            news.ImageHref = path;
+
             await UpdateDbAsync();
         }
 
@@ -49,32 +72,11 @@ namespace NewsAggregator.Services
             return new { id = comment.Id, comment.UserName, comment.Text, date = comment.Date.ToString("dd/MM/yyyy HH:mm:ss"), imagePath = _db.Users.First(u => u.UserName == comment.UserName).ImageHref };
         }
 
-        public IQueryable<Comment> GetComments()
-        {
-            return _db.Comments;
-        }
-
-        public IQueryable<News> GetNews()
-        {
-            return _db.News;
-        }
-
-        public IQueryable<AppUser> GetUsers()
-        {
-            return _db.AppUsers;
-        }
-
-        public News GetNewsById(int id)
-        {
-            var retNews = _db.News.First(n => n.Id == id);
-            retNews.Views++;
-            _db.SaveChanges();
-            return retNews;
-        }
-
         public void RemoveANews(int id)
         {
             var news = _db.News.First(n => n.Id == id);
+            if(news.ImageHref != null && news.ImageHref != "/images/DefaultImages/DefaultNews.png")
+                File.Delete(_appEnvironment.WebRootPath + news.ImageHref);
             _db.News.Remove(news);
             _db.SaveChanges();
         }
@@ -101,6 +103,36 @@ namespace NewsAggregator.Services
                 oldNews.Text = news.Text;
             }
             _db.SaveChanges();
+        }
+
+        public NewsViewModel GetNewsViewModel(int id)
+        {
+            var news = _db.News.First(n => n.Id == id);
+            news.Views++;
+            _db.SaveChanges();
+
+            return new NewsViewModel()
+            {
+                News = news,
+                Users = _db.Users,
+                Comments = _db.Comments.Where(c => c.NewsId == id)
+            };
+        }
+
+        public IndexViewModel GetIndexViewModel()
+        {
+            return new IndexViewModel()
+            {
+                News = _db.News
+            };
+        }
+
+        public EditNewsViewModel GetEditNewsViewModel(int id)
+        {
+            return new EditNewsViewModel()
+            {
+                News = _db.News.First(n => n.Id == id)
+            };
         }
     }
 }
