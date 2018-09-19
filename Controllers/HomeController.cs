@@ -71,39 +71,6 @@ namespace NewsAggregator.Controllers
             return _newsAggregator.FormComment(comment);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult RemoveANews(int id)
-        {
-            _newsAggregator.RemoveANews(id);
-            return RedirectToAction("Index");
-        }
-
-        [Authorize(Roles = "Admin, Moderator")]
-        [HttpPost]
-        public IActionResult RemoveComment(int commentId, int newsId)
-        {
-            _newsAggregator.RemoveComment(commentId);
-            return RedirectToAction("News", new { id = newsId });
-        }
-        
-        public IActionResult EditNews(int id)
-        {
-            return View(_newsAggregator.GetEditNewsViewModel(id));
-        }
-
-        [HttpPost]
-        public IActionResult EditANews(News news)
-        {
-            _newsAggregator.EditANews(news);
-            return RedirectToAction("News", new { id = news.Id });
-        }
-
-        public IActionResult ConfirmANews(int id)
-        {
-            _newsAggregator.ConfirmANews(id);
-            return RedirectToAction("Index");
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

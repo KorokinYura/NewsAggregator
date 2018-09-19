@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NewsAggregator.Data;
 using NewsAggregator.Models;
 using NewsAggregator.Models.ViewModels;
@@ -16,6 +18,7 @@ namespace NewsAggregator.Services
     {
         private readonly ApplicationDbContext _db;
         private readonly IHostingEnvironment _appEnvironment;
+        private const int commentsLoad = 3;                     // number of comments loaded per click
 
         public NewsAggregator(ApplicationDbContext db, IHostingEnvironment appEnvironment)
         {
@@ -68,8 +71,16 @@ namespace NewsAggregator.Services
 
         public object FormComment(Comment comment)
         {
-            var i = _db.Users.First(u => u.UserName == comment.UserName).ImageHref;
-            return new { id = comment.Id, comment.UserName, comment.Text, date = comment.Date.ToString("dd/MM/yyyy HH:mm:ss"), imagePath = _db.Users.First(u => u.UserName == comment.UserName).ImageHref };
+            var user = _db.AppUsers.First(u => u.UserName == comment.UserName);
+
+            return new
+            {
+                id = comment.Id,
+                comment.UserName,
+                comment.Text,
+                date = comment.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                imagePath = _db.AppUsers.FirstOrDefault(u => u.UserName == comment.UserName)?.ImageHref ?? "/images/DefaultImages/DefaultUser.png"
+            };
         }
 
         public void RemoveANews(int id)
@@ -105,7 +116,7 @@ namespace NewsAggregator.Services
             _db.SaveChanges();
         }
 
-        public NewsViewModel GetNewsViewModel(int id)
+        public NewsViewModel GetNewsViewModel(int id, int curComments = 0)
         {
             var news = _db.News.First(n => n.Id == id);
             news.Views++;
@@ -115,7 +126,7 @@ namespace NewsAggregator.Services
             {
                 News = news,
                 Users = _db.Users,
-                Comments = _db.Comments.Where(c => c.NewsId == id)
+                Comments = _db.Comments.Where(c => c.NewsId == id).AsEnumerable().Reverse().Take(curComments + commentsLoad)
             };
         }
 
@@ -133,6 +144,19 @@ namespace NewsAggregator.Services
             {
                 News = _db.News.First(n => n.Id == id)
             };
+        }
+
+        public IEnumerable<object> LoadMoreComments(int id, int curComments)
+        {
+            var comments = _db.Comments.Where(c => c.NewsId == id).AsEnumerable().Reverse().Skip(curComments).Take(commentsLoad);
+            var retList = new List<object>();
+
+            foreach(var comment in comments)
+            {
+                retList.Add(FormComment(comment));
+            }
+
+            return retList;
         }
     }
 }

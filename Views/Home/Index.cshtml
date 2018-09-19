@@ -17,7 +17,7 @@
 
                     if (!news.IsConfirmed)
                     {
-                        <a asp-action="ConfirmANews" asp-route-id="@news.Id" style="text-decoration: none;">
+                        <a asp-controller="Edit" asp-action="ConfirmANews" asp-route-id="@news.Id" style="text-decoration: none;">
                             <span class="btn btn-default glyphicon glyphicon-ok" style="color: green" type="submit"></span>
                         </a>
                     }
@@ -60,7 +60,7 @@
         if (confirm('Are you sure you want to remove this news?')) {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("RemoveANews", "Home")',
+                url: '@Url.Action("RemoveANews", "Edit")',
                 data: { id: id },
 
                 success: function () {

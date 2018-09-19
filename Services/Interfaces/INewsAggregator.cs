@@ -18,8 +18,9 @@ namespace NewsAggregator.Services.Interfaces
         void RemoveComment(int id);
         void EditANews(News news);
         object FormComment(Comment comment);
-        NewsViewModel GetNewsViewModel(int id);
+        NewsViewModel GetNewsViewModel(int id, int commentsLoad = 0);
         IndexViewModel GetIndexViewModel();
         EditNewsViewModel GetEditNewsViewModel(int id);
+        IEnumerable<object> LoadMoreComments(int id, int curComments);
     }
 }

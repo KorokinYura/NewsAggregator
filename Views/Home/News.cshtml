@@ -1,5 +1,4 @@
-﻿<!--Tuple<News, IEnumerable<Comment>, IEnumerable<AppUser>>-->
-@model NewsAggregator.Models.ViewModels.NewsViewModel
+﻿@model NewsAggregator.Models.ViewModels.NewsViewModel
 
 
 @{
@@ -15,7 +14,7 @@
     <div>
         @if (User.Identity.Name == Model.News.UserName || User.IsInRole("Admin"))
         {
-            <a asp-action="EditNews" asp-route-id="@Model.News.Id">
+            <a asp-controller="Edit" asp-action="EditNews" asp-route-id="@Model.News.Id">
                 <span class="btn btn-default glyphicon glyphicon-pencil" type="submit" value="Edit"></span>
             </a>
         }
@@ -36,8 +35,6 @@
 
 <div style="font-size: 150%">Комментарии:</div>
 <hr />
-<div class="table" id="table">
-</div>
 
 @if (User.Identity.Name != null)
 {
@@ -57,25 +54,47 @@ else
     </div>
 }
 
+<hr />
+<div class="table" id="comments">
+</div>
+
+<input type="button" onclick="loadMoreComments()" value="Load more comments" class="btn btn-default" />
+
 @section Scripts {
     <script>
-        $(function () { addComments(); });
+        $(function () { loadMoreComments(); });
+
+        let curComments = 0;
+
+        function loadMoreComments() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadMoreComments", "Load")',
+                data: { id: @Model.News.Id, curComments: curComments },
+
+                success: function (comments) {
+                    for (let i = 0; i < comments.length; i++) {
+                        addComment(comments[i]);
+                    }
+                }
+            });
+        }
 
         function addCommentAJAX() {
             var text = $("#text").val();
-            $('#text').val = '';
+            $("#text").val = '';
 
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("CreateCommentAsync", "Home")',
                 data: { newsId: @Model.News.Id, text: text },
 
-                success: addComment
+                success: writeComment
             });
         }
 
         function addComments() {
-            @foreach (var comment in Model.Comments)
+            @*@foreach (var comment in Model.Comments)
             {
                 string path;
                 try
@@ -90,14 +109,23 @@ else
                 <text>
                     addComment({ id: "@comment.Id", userName: "@comment.UserName", text: "@comment.Text", date: "@comment.Date", imagePath: "@Url.Content(path)" });
                 </text>
-            }
+            }*@
         }
 
-
+        function writeComment(comment) {
+            $("#comments").prepend(
+                formComment(comment)
+            );
+        }
 
         function addComment(comment) {
-            $("#table").append(
-                checkForRemoveButton(comment.id) +
+            $("#comments").append(
+                formComment(comment)
+            );
+        }
+
+        function formComment(comment) {
+            let ret = checkForRemoveButton(comment.id) +
                 '<div style="clear:both">' +
                 '<div class="commentImageDiv">' +
                 '<img class="commentImage" src="'
@@ -108,8 +136,12 @@ else
                 + comment.date +
                 '</div></div><div class="commentBody">'
                 + comment.text +
-                '</div><hr />');
+                '</div><hr />';
+            curComments++;
+
             $("#text").val("");
+
+            return ret;
         }
 
 
@@ -130,7 +162,7 @@ else
         function removeCommentAJAX(id) {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("RemoveComment", "Home")',
+                url: '@Url.Action("RemoveComment", "Edit")',
                 data: { commentId: id, newsId: @Model.News.Id },
 
                 success: function () {
