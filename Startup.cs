@@ -26,7 +26,6 @@ namespace NewsAggregator
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -38,7 +37,8 @@ namespace NewsAggregator
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection")
+                    .Replace("|DBFolder|", Environment.CurrentDirectory + "\\Data")));
 
             //services.AddDefaultIdentity<AppUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -82,7 +82,6 @@ namespace NewsAggregator
             services.AddSingleton<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db, ae));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
@@ -116,7 +115,7 @@ namespace NewsAggregator
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-            
+
             var adminRoleCheck = await RoleManager.RoleExistsAsync("Admin");
             var moderatorRoleCheck = await RoleManager.RoleExistsAsync("Moderator");
 
