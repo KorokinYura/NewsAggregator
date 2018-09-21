@@ -105,14 +105,31 @@ namespace NewsAggregator.Services
             _db.SaveChanges();
         }
 
-        public void EditANews(News news)
+        public void EditANews(News news, IFormFile image)
         {
             News oldNews = _db.News.FirstOrDefault(n => n.Id == news.Id);
             if (oldNews != null)
             {
                 oldNews.Name = news.Name;
                 oldNews.Text = news.Text;
+
+                string path;
+                if (image != null)
+                {
+                    path = "/images/NewsImages/" + news.Id + image.FileName.Substring(image.FileName.LastIndexOf('.'));
+
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        image.CopyTo(fileStream);
+                    }
+
+                    if (oldNews.ImageHref != null && oldNews.ImageHref != "/images/DefaultImages/DefaultNews.png" && path != oldNews.ImageHref)
+                        File.Delete(_appEnvironment.WebRootPath + oldNews.ImageHref);
+
+                    oldNews.ImageHref = path;
+                }
             }
+
             _db.SaveChanges();
         }
 

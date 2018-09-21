@@ -16,7 +16,7 @@ namespace NewsAggregator.Services.Interfaces
         void RemoveANews(int id);
         void ConfirmANews(int id);
         void RemoveComment(int id);
-        void EditANews(News news);
+        void EditANews(News news, IFormFile image);
         object FormComment(Comment comment);
         NewsViewModel GetNewsViewModel(int id, int commentsLoad = 0);
         IndexViewModel GetIndexViewModel();

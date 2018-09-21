@@ -10,9 +10,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Edit" asp-action="EditANews" asp-route-id="@Model.News.Id">
+        <form asp-controller="Edit" asp-action="EditANews" asp-route-id="@Model.News.Id" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="News.Id" />
+            <div class="form-group">
+                <label asp-for="@Model.News.ImageHref">Image</label>
+                <input asp-for="@Model.News.ImageHref" type="file" name="image" accept=".jpg, .jpeg, .png" />
+            </div>
             <div class="form-group">
                 <label asp-for="News.Name" class="control-label"></label>
                 <input asp-for="News.Name" class="form-control" />
@@ -20,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="News.Text" class="control-label"></label>
-                <textarea asp-for="News.Text" class="form-control" ></textarea>
+                <textarea asp-for="News.Text" class="form-control"></textarea>
                 <span asp-validation-for="News.Text" class="text-danger"></span>
             </div>
             <div class="form-group">

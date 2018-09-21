@@ -1,6 +1,5 @@
 ﻿@model NewsAggregator.Models.ViewModels.NewsViewModel
 
-
 @{
     ViewData["Title"] = "News";
 }
@@ -43,7 +42,7 @@
             <textarea class="form-control" name="text" id="text"></textarea>
         </div>
         <div class="form-group">
-            <input type="button" onclick="addCommentAJAX()" value="Create" id="submitButton" class="btn btn-default" />
+            <span type="button" onclick="addCommentAJAX()" id="submitButton" class="btn btn-default glyphicon glyphicon-send"></span>
         </div>
     </div>
 }
@@ -61,114 +60,28 @@ else
 <input type="button" onclick="loadMoreComments()" value="Load more comments" class="btn btn-default" />
 
 @section Scripts {
-    <script>
-        $(function () { loadMoreComments(); });
+<script>
+    var newsId = @Model.News.Id;
+    var loadMoreComm = '@Url.Action("LoadMoreComments", "Load")';
+    var createComment = '@Url.Action("CreateCommentAsync", "Home")';
+    var removeComment = '@Url.Action("RemoveComment", "Edit")';
 
-        let curComments = 0;
+    $(function () { loadMoreComments(); });
 
-        function loadMoreComments() {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("LoadMoreComments", "Load")',
-                data: { id: @Model.News.Id, curComments: curComments },
 
-                success: function (comments) {
-                    for (let i = 0; i < comments.length; i++) {
-                        addComment(comments[i]);
-                    }
-                }
-            });
-        }
-
-        function addCommentAJAX() {
-            var text = $("#text").val();
-            $("#text").val = '';
-
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("CreateCommentAsync", "Home")',
-                data: { newsId: @Model.News.Id, text: text },
-
-                success: writeComment
-            });
-        }
-
-        function addComments() {
-            @*@foreach (var comment in Model.Comments)
+    function checkForRemoveButton(id) {
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
             {
-                string path;
-                try
-                {
-                    path = Model.Users.First(u => u.UserName == comment.UserName).ImageHref;
-                }
-                catch
-                {
-                    path = "/images/DefaultImages/DefaultUser.png";
-                }
-
-                <text>
-                    addComment({ id: "@comment.Id", userName: "@comment.UserName", text: "@comment.Text", date: "@comment.Date", imagePath: "@Url.Content(path)" });
-                </text>
-            }*@
-        }
-
-        function writeComment(comment) {
-            $("#comments").prepend(
-                formComment(comment)
-            );
-        }
-
-        function addComment(comment) {
-            $("#comments").append(
-                formComment(comment)
-            );
-        }
-
-        function formComment(comment) {
-            let ret = checkForRemoveButton(comment.id) +
-                '<div style="clear:both">' +
-                '<div class="commentImageDiv">' +
-                '<img class="commentImage" src="'
-                + comment.imagePath +
-                '"></div><div class="commentHead">'
-                + comment.userName +
-                '</div><div class="commentFooter">'
-                + comment.date +
-                '</div></div><div class="commentBody">'
-                + comment.text +
-                '</div><hr />';
-            curComments++;
-
-            $("#text").val("");
-
-            return ret;
-        }
-
-
-        function checkForRemoveButton(id) {
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
-                {
-                <text>
-                    var button = '<input type="button" onclick="removeCommentAJAX(' + id + ')" value="Delete" id="RemButton" class="btn btn-default" /><br><br>';
-                    return button;
-                </text>
-                }
+            <text>
+        var button = '<span type="button" onclick="removeCommentAJAX(' + id + ')" id="RemButton" class="btn btn-default glyphicon glyphicon-trash" style="color: red"></span><br><br>';
+                return button;
+            </text>
             }
-            return "";
         }
+        return "";
+    }
 
-        function removeCommentAJAX(id) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("RemoveComment", "Edit")',
-                data: { commentId: id, newsId: @Model.News.Id },
-
-                success: function () {
-                    location.reload();
-                }
-            });
-        }
-    </script>
+</script>
 }

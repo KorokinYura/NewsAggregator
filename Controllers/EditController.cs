@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsAggregator.Models;
 using NewsAggregator.Services.Interfaces;
@@ -38,9 +39,9 @@ namespace NewsAggregator.Controllers
             return View(_newsAggregator.GetEditNewsViewModel(id));
         }
 
-        public IActionResult EditANews(News news)
+        public IActionResult EditANews(News news, IFormFile image)
         {
-            _newsAggregator.EditANews(news);
+            _newsAggregator.EditANews(news, image);
             return RedirectToAction("News", "Home", new { id = news.Id });
         }
 

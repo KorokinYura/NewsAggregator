@@ -36,13 +36,9 @@
                         <div class="newsFooter">
                             &nbsp;<span class="glyphicon glyphicon-user"></span>
                             @news.UserName
-                            <text>
-                                &nbsp;<span class="glyphicon glyphicon-calendar"></span>
-                            </text>
+                            &nbsp;<span class="glyphicon glyphicon-calendar"></span>
                             @news.Date
-                            <text>
-                                &nbsp;<span class="glyphicon glyphicon-eye-open"></span>
-                            </text>
+                            &nbsp;<span class="glyphicon glyphicon-eye-open"></span>
                             @news.Views
                         </div><br>
                     </div>
@@ -56,17 +52,5 @@
 <a asp-action="CreateNews" class="btn btn-default">Create news</a>
 
 <script>
-    function askForDelete(id) {
-        if (confirm('Are you sure you want to remove this news?')) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("RemoveANews", "Edit")',
-                data: { id: id },
-
-                success: function () {
-                    location.reload();
-                }
-            });
-        }
-    }
+    var removeANews = '@Url.Action("RemoveANews", "Edit")';
 </script>
