@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsAggregator.Data;
 using NewsAggregator.Models;
+using NewsAggregator.Models.ViewModels;
 using NewsAggregator.Services.Interfaces;
 
 namespace NewsAggregator.Controllers
@@ -69,6 +70,12 @@ namespace NewsAggregator.Controllers
             }
 
             return _newsAggregator.FormComment(comment);
+        }
+
+        public IActionResult Search(string searchRequest)
+        {
+            searchRequest = searchRequest ?? "";
+            return View("Index", _newsAggregator.GetSearchIndexViewModel(searchRequest));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

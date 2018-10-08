@@ -20,6 +20,7 @@ namespace NewsAggregator.Services.Interfaces
         object FormComment(Comment comment);
         NewsViewModel GetNewsViewModel(int id, int commentsLoad = 0);
         IndexViewModel GetIndexViewModel();
+        IndexViewModel GetSearchIndexViewModel(string searchRequest);
         EditNewsViewModel GetEditNewsViewModel(int id);
         IEnumerable<object> LoadMoreComments(int id, int curComments);
     }

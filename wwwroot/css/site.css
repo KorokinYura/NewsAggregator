@@ -110,3 +110,11 @@ textarea.form-control {
     max-height: 200px;
     max-width: 400px;
 }
+
+.search {
+    overflow: hidden;
+    text-align: center;
+    margin: 8px 0px 0px 0px;
+    margin-left: 250px;
+    width: 300px;
+}

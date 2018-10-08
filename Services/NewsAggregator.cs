@@ -155,6 +155,14 @@ namespace NewsAggregator.Services
             };
         }
 
+        public IndexViewModel GetSearchIndexViewModel(string searchRequest)
+        {
+            return new IndexViewModel
+            {
+                News = _db.News.Where(n => n.Name.Contains(searchRequest))
+            };
+        }
+
         public EditNewsViewModel GetEditNewsViewModel(int id)
         {
             return new EditNewsViewModel()

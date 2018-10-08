@@ -30,7 +30,6 @@ namespace NewsAggregator
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -39,10 +38,7 @@ namespace NewsAggregator
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")
                     .Replace("|DBFolder|", Environment.CurrentDirectory + "\\Data")));
-
-            //services.AddDefaultIdentity<AppUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
@@ -59,27 +55,11 @@ namespace NewsAggregator
                 options.Password.RequiredLength = 6;
             });
 
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    // Cookie settings 
-            //    options.Cookie.HttpOnly = true;
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.LoginPath = "/Account/Login"; // If the LoginPath is not set here,  
-            //                                          // ASP.NET Core will default to /Account/Login 
-            //    options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here,  
-            //                                            // ASP.NET Core will default to /Account/Logout 
-            //    options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is  
-            //                                                        // not set here, ASP.NET Core  
-            //                                                        // will default to  
-            //                                                        // /Account/AccessDenied 
-            //    options.SlidingExpiration = true;
-            //});
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var db = services.BuildServiceProvider().GetService<ApplicationDbContext>();
             var ae = services.BuildServiceProvider().GetService<IHostingEnvironment>();
-            services.AddSingleton<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db, ae));
+            services.AddScoped<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db, ae));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)

@@ -27,6 +27,17 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">NewsAggregator</a>
+                <form asp-action="Search" class="search">
+                    <div class="input-group">
+                        <input type="text" name="searchRequest" class="form-control" placeholder="Search" autocomplete="off">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                    @*<input type="text" placeholder="Search" autocomplete="off" id="searchInput" />*@
+                </form>
             </div>
             <div class="navbar-collapse collapse">
                 <partial name="_LoginPartial" />
