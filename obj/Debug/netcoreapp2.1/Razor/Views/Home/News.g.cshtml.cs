@@ -84,7 +84,7 @@ Write(Model.News.Name);
             WriteLiteral("            ");
             EndContext();
             BeginContext(303, 204, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "484f7a46da6a4faa9621cbdf5d43e68d", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "907d593bd4a541e998766a88cfd70609", async() => {
                 BeginContext(380, 123, true);
                 WriteLiteral("\r\n                <span class=\"btn btn-default glyphicon glyphicon-pencil\" type=\"submit\" value=\"Edit\"></span>\r\n            ");
                 EndContext();
@@ -149,7 +149,7 @@ WriteAttributeValue("", 579, Url.Content(Model.News.ImageHref), 579, 34, false);
             WriteLiteral("</span>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div>\r\n    <br />\r\n    ");
             EndContext();
             BeginContext(813, 38, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "658c64e4afc44a798b294c0d4b717558", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "536fa37e2df0403685a5e5f2d9c9c88f", async() => {
                 BeginContext(835, 12, true);
                 WriteLiteral("Back to List");
                 EndContext();

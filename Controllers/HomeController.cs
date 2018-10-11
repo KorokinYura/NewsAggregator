@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsAggregator.Data;
 using NewsAggregator.Models;
@@ -18,15 +19,17 @@ namespace NewsAggregator.Controllers
     public class HomeController : Controller
     {
         private readonly INewsAggregator _newsAggregator;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HomeController(INewsAggregator newsAggregator)
+        public HomeController(INewsAggregator newsAggregator, UserManager<AppUser> userManager)
         {
             _newsAggregator = newsAggregator;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int newsCount = 0)
         {
-            return View(_newsAggregator.GetIndexViewModel());
+            return View(_newsAggregator.GetIndexViewModel(newsCount));
         }
 
         public IActionResult News(int id)
@@ -76,6 +79,29 @@ namespace NewsAggregator.Controllers
         {
             searchRequest = searchRequest ?? "";
             return View("Index", _newsAggregator.GetSearchIndexViewModel(searchRequest));
+        }
+
+        public async Task AddModerAsync(string userName)
+        {
+            if(userName != null)
+            {
+                AppUser user = await _userManager.FindByNameAsync(userName);
+
+                if (!User.IsInRole("Moderator"))
+                {
+                    await _userManager.AddToRoleAsync(user, "Moderator");
+                }
+            }
+        }
+        
+        public async Task RemoveModerAsync(string userName)
+        {
+            AppUser user = await _userManager.FindByNameAsync(userName);
+
+            if (!User.IsInRole("Moderator"))
+            {
+                await _userManager.RemoveFromRoleAsync(user, "Moderator");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

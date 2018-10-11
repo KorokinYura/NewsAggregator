@@ -43,3 +43,4 @@ D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Are
 D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Areas\Identity\Pages\Account\Manage\_ManageNav.g.cshtml.cs
 D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\NewsAggregator.csprojAssemblyReference.cache
 D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Views\Edit\EditNews.g.cshtml.cs
+D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\obj\Debug\netcoreapp2.1\Razor\Areas\Identity\Pages\Account\Manage\AdminMenu.g.cshtml.cs

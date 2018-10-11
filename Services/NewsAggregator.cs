@@ -19,6 +19,7 @@ namespace NewsAggregator.Services
         private readonly ApplicationDbContext _db;
         private readonly IHostingEnvironment _appEnvironment;
         private const int commentsLoad = 3;                     // number of comments loaded per click
+        private const int newsLoad = 5;                         // number of news loaded per click
 
         public NewsAggregator(ApplicationDbContext db, IHostingEnvironment appEnvironment)
         {
@@ -147,11 +148,11 @@ namespace NewsAggregator.Services
             };
         }
 
-        public IndexViewModel GetIndexViewModel()
+        public IndexViewModel GetIndexViewModel(int newsCount)
         {
             return new IndexViewModel()
             {
-                News = _db.News
+                News = _db.News.OrderBy(n => !n.IsConfirmed).Take(newsCount + 5)
             };
         }
 

@@ -5,10 +5,16 @@
 }
 
 <br><div class="container body-content">
+    @{
+        int newsCount = 0;
+    }
+
     @if (Model != null)
     {
         foreach (var news in Model.News)
         {
+            newsCount++;
+
             if (news.IsConfirmed || (User.Identity.IsAuthenticated && User.IsInRole("Admin")) || User.Identity.Name == news.UserName)
             {
                 if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -48,6 +54,8 @@
         }
     }
 </div>
+<a asp-action="Index" asp-route-newsCount="@newsCount" class="btn btn-default">Load more</a>
+<br /><br />
 
 <a asp-action="CreateNews" class="btn btn-default">Create news</a>
 

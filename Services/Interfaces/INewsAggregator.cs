@@ -19,7 +19,7 @@ namespace NewsAggregator.Services.Interfaces
         void EditANews(News news, IFormFile image);
         object FormComment(Comment comment);
         NewsViewModel GetNewsViewModel(int id, int commentsLoad = 0);
-        IndexViewModel GetIndexViewModel();
+        IndexViewModel GetIndexViewModel(int newsCount);
         IndexViewModel GetSearchIndexViewModel(string searchRequest);
         EditNewsViewModel GetEditNewsViewModel(int id);
         IEnumerable<object> LoadMoreComments(int id, int curComments);

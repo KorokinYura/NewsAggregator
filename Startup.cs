@@ -93,26 +93,26 @@ namespace NewsAggregator
 
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
-            var adminRoleCheck = await RoleManager.RoleExistsAsync("Admin");
-            var moderatorRoleCheck = await RoleManager.RoleExistsAsync("Moderator");
+            var adminRoleCheck = await roleManager.RoleExistsAsync("Admin");
+            var moderatorRoleCheck = await roleManager.RoleExistsAsync("Moderator");
 
             if (!adminRoleCheck)
             {
-                await RoleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
             }
             if (!moderatorRoleCheck)
             {
-                await RoleManager.CreateAsync(new IdentityRole("Moderator"));
+                await roleManager.CreateAsync(new IdentityRole("Moderator"));
             }
 
-            AppUser admin = await UserManager.FindByNameAsync("Admin");
-            await UserManager.AddToRoleAsync(admin, "Admin");
+            AppUser admin = await userManager.FindByNameAsync("Admin");
+            await userManager.AddToRoleAsync(admin, "Admin");
 
-            AppUser moder = await UserManager.FindByNameAsync("Moderator");
-            await UserManager.AddToRoleAsync(moder, "Moderator");
+            AppUser moder = await userManager.FindByNameAsync("Moderator");
+            await userManager.AddToRoleAsync(moder, "Moderator");
         }
     }
 }
