@@ -1,4 +1,5 @@
 ﻿@page
+@model AdminMenu
 @{
     ViewData["Title"] = "AdminMenu";
 }
@@ -7,6 +8,15 @@
 <br />
 <div class="row">
     <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Moderators</div>
+            <div class="panel-body" style="height: 200px; overflow-y: scroll;">
+                @foreach(var user in Model.Input.Moderators)
+                {
+                    @user.UserName<br>
+                }
+            </div>
+        </div>
         <div class="form-group">
             <label class="control-label">Add Moder</label>
             <input placeholder="Add Moder" name="userName" class="form-control" autocomplete="off" id="addModer" />

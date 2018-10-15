@@ -31,10 +31,10 @@ namespace NewsAggregator.Controllers
         {
             return View(_newsAggregator.GetIndexViewModel(newsCount));
         }
-
-        public IActionResult News(int id)
+        
+        public async Task<IActionResult> News(int id)
         {
-            return View(_newsAggregator.GetNewsViewModel(id));
+            return View( await _newsAggregator.GetNewsViewModelAsync(id));
         }
 
         [Authorize]
@@ -83,24 +83,27 @@ namespace NewsAggregator.Controllers
 
         public async Task AddModerAsync(string userName)
         {
-            if(userName != null)
+            if (userName != null)
             {
                 AppUser user = await _userManager.FindByNameAsync(userName);
 
-                if (!User.IsInRole("Moderator"))
+                if (!await _userManager.IsInRoleAsync(user, "Moderator"))
                 {
                     await _userManager.AddToRoleAsync(user, "Moderator");
                 }
             }
         }
-        
+
         public async Task RemoveModerAsync(string userName)
         {
-            AppUser user = await _userManager.FindByNameAsync(userName);
-
-            if (!User.IsInRole("Moderator"))
+            if (userName != null)
             {
-                await _userManager.RemoveFromRoleAsync(user, "Moderator");
+                AppUser user = await _userManager.FindByNameAsync(userName);
+
+                if (await _userManager.IsInRoleAsync(user, "Moderator"))
+                {
+                    await _userManager.RemoveFromRoleAsync(user, "Moderator");
+                }
             }
         }
 

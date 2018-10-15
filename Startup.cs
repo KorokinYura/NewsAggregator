@@ -37,7 +37,8 @@ namespace NewsAggregator
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")
-                    .Replace("|DBFolder|", Environment.CurrentDirectory + "\\Data")));
+                    .Replace("|DBFolder|", Environment.CurrentDirectory + "\\Data")), 
+                    ServiceLifetime.Transient);
             
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -57,9 +58,9 @@ namespace NewsAggregator
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var db = services.BuildServiceProvider().GetService<ApplicationDbContext>();
-            var ae = services.BuildServiceProvider().GetService<IHostingEnvironment>();
-            services.AddScoped<INewsAggregator, Services.NewsAggregator>(s => new Services.NewsAggregator(db, ae));
+            //var db = services.BuildServiceProvider().GetService<ApplicationDbContext>();
+            //var ae = services.BuildServiceProvider().GetService<IHostingEnvironment>();
+            services.AddScoped<INewsAggregator, Services.NewsAggregator>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)

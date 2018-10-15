@@ -119,7 +119,7 @@ WriteAttributeValue("", 669, news.Id, 669, 8, false);
             WriteLiteral("                        ");
             EndContext();
             BeginContext(796, 261, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "08306ca650d446f198197c3bc90bad9a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c1c37f066b4343159a3e18de3fe03ecd", async() => {
                 BeginContext(902, 151, true);
                 WriteLiteral("\r\n                            <span class=\"btn btn-default glyphicon glyphicon-ok\" style=\"color: green\" type=\"submit\"></span>\r\n                        ");
                 EndContext();
@@ -174,7 +174,7 @@ WriteAttributeValue("", 669, news.Id, 669, 8, false);
             WriteLiteral("                <div style=\"clear:both\">\r\n                    <div class=\"newsImageDiv\">\r\n                        ");
             EndContext();
             BeginContext(1251, 108, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "46e6b5865e324b729a0071c658109ccb", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7db0b36cc4e041eabf3de2d0d43ad501", async() => {
                 BeginContext(1296, 22, true);
                 WriteLiteral("<img class=\"newsImage\"");
                 EndContext();
@@ -220,7 +220,7 @@ WriteAttributeValue("", 1324, Url.Content(news.ImageHref), 1324, 28, false);
             WriteLiteral("\r\n                    </div>\r\n                    <div style=\"height: 100px\">\r\n                        <div>\r\n                            ");
             EndContext();
             BeginContext(1497, 110, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "5b69842edd5b44f8933dd30567774157", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fb11fcf05716459cae2db924f65a717a", async() => {
                 BeginContext(1594, 9, false);
 #line 39 "D:\NURE\BaseCamp\NewsAggregator\NewsAggregator\Views\Home\Index.cshtml"
                                                                                                                        Write(news.Name);
@@ -324,7 +324,7 @@ AddHtmlAttributeValue("", 1581, news.Name, 1581, 10, false);
             WriteLiteral("</div>\r\n");
             EndContext();
             BeginContext(2287, 92, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6a582c39c0d44b8bbf2772141798ff45", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e66fb4282b1642c692dc0e418a01093e", async() => {
                 BeginContext(2366, 9, true);
                 WriteLiteral("Load more");
                 EndContext();
@@ -360,7 +360,7 @@ AddHtmlAttributeValue("", 1581, news.Name, 1581, 10, false);
             WriteLiteral("\r\n<br /><br />\r\n\r\n");
             EndContext();
             BeginContext(2397, 66, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ee05996302354563b0650fbded12c8ed", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3277e15cb39c4fccba7cf3ce196180da", async() => {
                 BeginContext(2448, 11, true);
                 WriteLiteral("Create news");
                 EndContext();

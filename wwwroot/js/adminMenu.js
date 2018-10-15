@@ -8,6 +8,10 @@
 
         success: function () {
             location.reload();
+        },
+
+        error: function () {
+            alert("There is not a user with name " + userName)
         }
     });
 }
@@ -22,6 +26,10 @@ function removeModerator() {
 
         success: function () {
             location.reload();
+        },
+
+        error: function () {
+            alert("There is not a user with name " + userName)
         }
     });
 }

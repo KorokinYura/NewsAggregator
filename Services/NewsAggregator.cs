@@ -134,11 +134,11 @@ namespace NewsAggregator.Services
             _db.SaveChanges();
         }
 
-        public NewsViewModel GetNewsViewModel(int id, int curComments = 0)
+        public async Task<NewsViewModel> GetNewsViewModelAsync(int id, int curComments = 0)
         {
             var news = _db.News.First(n => n.Id == id);
             news.Views++;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return new NewsViewModel()
             {
